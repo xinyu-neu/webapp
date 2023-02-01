@@ -1,0 +1,41 @@
+name: hw1-actions
+
+on:
+  push:
+    branches:
+      - hw1
+      - main
+  pull_request:
+    branches:
+      - hw1
+      - main
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0.21
+        env:
+          MYSQL_DATABASE: db_webapp3
+          MYSQL_USER: springuser3
+          MYSQL_ROOT_PASSWORD: ThePassword
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: maven
+
+      - name: All the Tests Checks
+        run: mvn clean install
