@@ -22,7 +22,7 @@ public class AppController {
   @Autowired
   private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  @GetMapping(path = "/healthz")
+  @GetMapping(path = "/health")
   public void checkHealth() {
     return;
   }
