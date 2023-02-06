@@ -19,8 +19,8 @@ jobs:
         image: mysql:8.0.21
         env:
           MYSQL_DATABASE: db_webapp3
-          MYSQL_USER: springuser3
-          MYSQL_ROOT_PASSWORD: ThePassword
+          MYSQL_USER: root
+          MYSQL_ROOT_PASSWORD: 11959791
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
