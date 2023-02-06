@@ -1,4 +1,4 @@
-package com.xinyu.webapp.security.basicauth.entity;
+package com.xinyu.webapp.entity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

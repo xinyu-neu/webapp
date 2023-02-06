@@ -29,6 +29,7 @@ build/
 !**/src/test/**/build/
 .DS_Store
 .mvn
+.mvnw
 
 ### VS Code ###
 .vscode/

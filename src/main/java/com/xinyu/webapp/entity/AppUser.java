@@ -1,4 +1,4 @@
-package com.xinyu.webapp.security.basicauth.entity;
+package com.xinyu.webapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +12,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "user03")
+@Table(name = "UserTB")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
