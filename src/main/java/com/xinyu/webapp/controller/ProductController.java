@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 public class ProductController {
 
@@ -28,7 +30,17 @@ public class ProductController {
         String username = authentication.getName();
         AppUser userOri = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 
-        appProduct.setOwner_user_id(userOri.getId());
+        if (appProduct.getName() == null || appProduct.getDescription() == null || appProduct.getSku() == null
+                || appProduct.getManufacturer() == null || appProduct.getQuantity() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        Optional<AppProduct> optinalProduct = productRepository.findBySku(appProduct.getSku());
+        if (optinalProduct.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        appProduct.setAppUser(userOri);
         productRepository.save(appProduct);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(appProduct);
@@ -48,11 +60,13 @@ public class ProductController {
         String username = authentication.getName();
         AppUser userOri = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 
-        if (!product.getOwner_user_id().equals(userOri.getId())) {
+        if (!product.getAppUser().getId().equals(userOri.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
 
-        if (appProduct.getQuantity() < 0 || appProduct.getQuantity() > 100) {
+        if (appProduct.getName() == null || appProduct.getDescription() == null || appProduct.getSku() == null
+                || appProduct.getManufacturer() == null || appProduct.getQuantity() == null
+                || (appProduct.getQuantity() < 0 || appProduct.getQuantity() > 100)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
@@ -73,11 +87,13 @@ public class ProductController {
         String username = authentication.getName();
         AppUser userOri = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 
-        if (!product.getOwner_user_id().equals(userOri.getId())) {
+        if (!product.getAppUser().getId().equals(userOri.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
 
-        if (appProduct.getQuantity() < 0 || appProduct.getQuantity() > 100) {
+        if (appProduct.getName() == null || appProduct.getDescription() == null || appProduct.getSku() == null
+                || appProduct.getManufacturer() == null || appProduct.getQuantity() == null
+                || (appProduct.getQuantity() < 0 || appProduct.getQuantity() > 100)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
@@ -98,7 +114,7 @@ public class ProductController {
         String username = authentication.getName();
         AppUser userOri = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 
-        if (!product.getOwner_user_id().equals(userOri.getId())) {
+        if (!product.getAppUser().getId().equals(userOri.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
 
