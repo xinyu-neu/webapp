@@ -1,7 +1,7 @@
 package com.xinyu.webapp.security.basicauth.service;
 
-import com.xinyu.webapp.security.basicauth.entity.AppUserRepository;
-import com.xinyu.webapp.security.basicauth.entity.AppUser;
+import com.xinyu.webapp.entity.AppUserRepository;
+import com.xinyu.webapp.entity.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
