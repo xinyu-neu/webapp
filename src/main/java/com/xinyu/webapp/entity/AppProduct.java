@@ -1,8 +1,12 @@
 package com.xinyu.webapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -38,5 +42,17 @@ public class AppProduct {
     @JsonProperty("date_last_updated")
     private Date date_last_updated = new Date();
 
-    private Integer owner_user_id;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "owner_user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private AppUser appUser;
+
+    @JsonIgnore
+    public AppUser getAppUser() {
+        return appUser;
+    }
+
+    public int getOwner_user_id() {
+        return appUser.getId();
+    }
 }
