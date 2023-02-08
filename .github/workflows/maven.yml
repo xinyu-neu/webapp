@@ -9,6 +9,12 @@ on:
     branches:
       - hw1
       - main
+      
+env:
+  SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/db_webapp3?useSSL=false&allowPublicKeyRetrieval=true
+  SPRING_DATASOURCE_USERNAME: root
+  SPRING_DATASOURCE_PASSWORD: 11959791
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,6 +22,8 @@ jobs:
       mysql:
         image: mysql:8.0.21
         env:
+          MYSQL_USER: root
+          MYSQL_PASSWORD: 11959791
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: db_webapp3
         ports:
