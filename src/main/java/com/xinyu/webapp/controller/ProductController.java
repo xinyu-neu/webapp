@@ -107,8 +107,15 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
+    @DeleteMapping(path = "/v1/product/")
+    public ResponseEntity<String> deleteWithoutId() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+
     @DeleteMapping(path = "/v1/product/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable(value = "id") int id, Authentication authentication) {
+        System.out.println("id" + id);
+
         AppProduct product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
 
         String username = authentication.getName();
