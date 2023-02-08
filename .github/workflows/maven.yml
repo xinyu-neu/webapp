@@ -9,18 +9,23 @@ on:
     branches:
       - hw1
       - main
+      
+env:
+  SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/db_webapp?useSSL=false&allowPublicKeyRetrieval=true
+  SPRING_DATASOURCE_USERNAME: user
+  SPRING_DATASOURCE_PASSWORD: password
+      
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     services:
       mysql:
-        image: mysql:8.0.21
+        image: mysql:latest
         env:
-          MYSQL_DATABASE: db_webapp3
-          MYSQL_USER: root
-          MYSQL_ROOT_PASSWORD: 11959791
+          MYSQL_DATABASE: db_webapp
+          MYSQL_USER: 'user'
+          MYSQL_PASSWORD: 'password'
+          MYSQL_ROOT_PASSWORD: 'password'
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
