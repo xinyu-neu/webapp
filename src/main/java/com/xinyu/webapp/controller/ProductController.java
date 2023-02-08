@@ -90,18 +90,21 @@ public class ProductController {
         if (!product.getAppUser().getId().equals(userOri.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
-
-        if (appProduct.getName() == null || appProduct.getDescription() == null || appProduct.getSku() == null
-                || appProduct.getManufacturer() == null || appProduct.getQuantity() == null
-                || (appProduct.getQuantity() < 0 || appProduct.getQuantity() > 100)) {
+        if (appProduct.getQuantity() != null && (appProduct.getQuantity() < 0 || appProduct.getQuantity() > 100)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+        if (appProduct.getSku() != null) {
+            Optional<AppProduct> optinalProduct = productRepository.findBySku(appProduct.getSku());
+            if (optinalProduct.isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+        }
 
-        product.setName(appProduct.getName());
-        product.setDescription(appProduct.getDescription());
-        product.setSku(appProduct.getSku());
-        product.setManufacturer(appProduct.getManufacturer());
-        product.setQuantity(appProduct.getQuantity());
+        if (appProduct.getName() != null) {product.setName(appProduct.getName());}
+        if (appProduct.getDescription() != null) {product.setDescription(appProduct.getDescription());}
+        if (appProduct.getSku() != null) {product.setSku(appProduct.getSku());}
+        if (appProduct.getManufacturer() != null) {product.setManufacturer(appProduct.getManufacturer());}
+        if (appProduct.getQuantity() != null) {product.setQuantity(appProduct.getQuantity());}
         productRepository.save(product);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
