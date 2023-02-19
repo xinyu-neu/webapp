@@ -2,6 +2,7 @@ package com.xinyu.webapp.security.basicauth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,7 +18,8 @@ public class BasicAuthWebSecurityConfiguration {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.authorizeRequests()
-            .antMatchers("/healthz", "/v1/user", "/all").permitAll()
+            .antMatchers(HttpMethod.GET, "/healthz", "/v1/product/**").permitAll()
+            .antMatchers(HttpMethod.POST, "/v1/user").permitAll()
             .anyRequest().authenticated()
             .and().csrf().disable()
             .httpBasic()
