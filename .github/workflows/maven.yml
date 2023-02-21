@@ -37,25 +37,16 @@ jobs:
       - name: Run unit test
         run: mvn test
 
-      - name: Build artifact
+      - name: Build with Maven
         run: mvn package
 
       - name: Build AMI
-        uses: hashicorp/packer-github-actions@v2.5.2
-        with: 
-          packer_template_path: ./packer/ec2.pkr.hcl
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: us-west-2
-        env:
-          APP_VERSION: ${{ github.sha }}
-      
-      - name: Deploy AMI
-        uses: aws-actions/amazon-ec2-instance-manager@v1
+        uses: ExitoLab/packer_build_action_aws@v0.2.10
         with:
-          ami_id: ${{ steps.build.outputs.ami_id }}
-          instance_type: t2.micro
-          key_name: ec2
-          subnet_id: subnet-01dffc76ab67b206d
-          security_group_id: sg-0955a66ea383f4667
-          tag_specifications: 'ResourceType=instance,Tags=[{Key=Name,Value=my-app-instance}]'
+          templateFile: 'ec2.pkr.hcl'
+          workingDir: 'packer'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-west-2
+
