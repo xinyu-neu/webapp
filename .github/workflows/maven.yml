@@ -3,11 +3,9 @@ name: hw1-actions
 on:
   push:
     branches:
-      - hw1
       - main
   pull_request:
     branches:
-      - hw1
       - main
 jobs:
   build:
@@ -23,7 +21,9 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -34,6 +34,28 @@ jobs:
       - name: Verify  db_webapp3 DB exists
         run: mysql --host 127.0.0.1 --port 3306 -uroot --password=11959791 -e "SHOW DATABASES LIKE 'db_webapp3'"
 
-      - name: Build with Maven
-        run:
-          mvn clean install -DskipTests=false
+      - name: Run unit test
+        run: mvn test
+
+      - name: Build artifact
+        run: mvn package
+
+      - name: Build AMI
+        uses: hashicorp/packer-github-actions@v2.5.2
+        with: 
+          packer_template_path: ./packer/ec2.pkr.hcl
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-west-2
+        env:
+          APP_VERSION: ${{ github.sha }}
+      
+      - name: Deploy AMI
+        uses: aws-actions/amazon-ec2-instance-manager@v1
+        with:
+          ami_id: ${{ steps.build.outputs.ami_id }}
+          instance_type: t2.micro
+          key_name: ec2
+          subnet_id: subnet-01dffc76ab67b206d
+          security_group_id: sg-0955a66ea383f4667
+          tag_specifications: 'ResourceType=instance,Tags=[{Key=Name,Value=my-app-instance}]'
