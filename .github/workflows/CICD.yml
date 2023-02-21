@@ -40,13 +40,15 @@ jobs:
       - name: Build with Maven
         run: mvn package
 
-      - name: Build AMI
-        uses: ExitoLab/packer_build_action_aws@v0.2.10
+      - name: Setup packer
+        uses: hashicorp/setup-packer@main
+        id: setup
         with:
-          templateFile: 'ec2.pkr.hcl'
-          workingDir: 'packer'
+            version: "latest"
+
+      - name: Run packer build
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: us-west-2
+        run: cd packer && packer build ec2.pkr.hcl
 
