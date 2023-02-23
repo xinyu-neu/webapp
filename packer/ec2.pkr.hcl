@@ -18,12 +18,16 @@ variable "subnet_id" {
   default = "subnet-01dffc76ab67b206d"
 }
 
+variable "ami_users_id" {
+  type = list(string)
+  default = ["630049607588", "619941072621"]
+}
 
 source "amazon-ebs" "my-ami" {
   region          = "${var.aws_region}"
   ami_name        = "csye6225_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
   ami_description = "AMI for CSYE 6225"
-  ami_users       = ["630049607588", "619941072621"]
+  ami_users       = var.ami_users_id
 
   instance_type = "t2.micro"
   source_ami    = "${var.source_ami}"
