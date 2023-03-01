@@ -43,10 +43,6 @@ build {
     script = "setup.sh"
   }
 
-  provisioner "shell" {
-    script = "expect.sh"
-  }
-
   provisioner "file" {
     source      = "../target/webapp-0.0.1-SNAPSHOT.jar"
     destination = "/opt/deployment/app.jar"
