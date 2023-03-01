@@ -64,26 +64,21 @@ public class ImageController {
         String filename = file.getOriginalFilename();
         String fileType = file.getContentType();
         byte[] imageData = file.getBytes();
-        String key = UUID.randomUUID() + "." + fileType;
+        String key = UUID.randomUUID().toString();
 
-        InputStream is = new ByteArrayInputStream(imageData);
         ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType("image/" + fileType);
+        metadata.setContentType(fileType);
+        metadata.setContentLength(imageData.length);
 
-        try {
-            var putObjectRequest = new PutObjectRequest(BUCKET_NAME, key, is, metadata);
-            PutObjectResult result = s3Client.putObject(putObjectRequest);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        PutObjectRequest put = new PutObjectRequest(BUCKET_NAME, key + "/" + filename, new ByteArrayInputStream(imageData), metadata);
+        s3Client.putObject(put);
 
-        String url = "https://" + BUCKET_NAME + ".s3." + AWS_REGION + ".amazonaws.com/" + key;
 
         AppImage appImage = new AppImage();
         appImage.setFile_name(filename);
         appImage.setKeyString(key);
         appImage.setAppProduct(product);
-        appImage.setS3_bucket_path(url);
+        appImage.setS3_bucket_path(s3Client.getUrl(BUCKET_NAME, key).toString());
         imageRepository.save(appImage);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(appImage);
@@ -120,9 +115,10 @@ public class ImageController {
         Optional<AppImage> optionalAppImage = imageRepository.findById(image_id);
         if (optionalAppImage.isPresent()) {
             AppImage image = optionalAppImage.get();
-            String key = image.getKeyString();
+            String path = image.getKeyString();
+            String filename = image.getFile_name();
             imageRepository.deleteById(image.getId());
-            s3Client.deleteObject(BUCKET_NAME, key);
+            s3Client.deleteObject(BUCKET_NAME, path + '/' + filename);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

@@ -49,15 +49,13 @@ jobs:
         with:
             version: "latest"
 
-      - name: Validate Packer Template
-        uses: hashicorp/packer-github-actions@master
-        with:
-          command: "validate"
-          target: "/packer/ec2.pkr.hcl"
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: us-west-2
+      - name: Run `packer init`
+        id: init
+        run: "packer init ./ec2.pkr.hcl"
+
+      - name: Run `packer validate`
+        id: validate
+        run: "packer validate ./ec2.pkr.hcl"
 
       - name: Run packer build
         env:
