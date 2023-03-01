@@ -10,7 +10,7 @@ Description=Manage Java service
 
 [Service]
 WorkingDirectory=/opt/deployment
-ExecStart=/bin/java -Xms128m -Xmx256m -jar app.jar
+ExecStart=/bin/bash -c 'source /etc/bashrc && /usr/bin/java -jar app.jar'
 User=jvmapps
 Type=simple
 Restart=on-failure
@@ -27,3 +27,4 @@ sudo systemctl daemon-reload
 sudo systemctl start myapp.service
 
 sudo systemctl enable myapp
+
