@@ -5,6 +5,16 @@ on:
     branches:
       - main
 
+env:
+  DB_HOST: localhost:3306
+  DB_NAME: db_webapp3
+  DB_USERNAME: root
+  DB_PASSWORD: 11959791
+  BUCKET_NAME: bucket
+  AWS_REGION: us-west-2
+  AWS_ACCESS_KEY_ID: AKIAZFMPCB6SLLLTUPHC
+  AWS_SECRET_ACCESS_KEY: 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
+
 jobs:
   hw4-CI:
     runs-on: ubuntu-latest
