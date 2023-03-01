@@ -16,7 +16,7 @@ env:
   AWS_SECRET_ACCESS_KEY: hmOErBsGBqikPV5qZM+o9TaPfIBuP1dJSXSY41pk
 
 jobs:
-  hw4-CI:
+  build:
     runs-on: ubuntu-latest
 
     services:
