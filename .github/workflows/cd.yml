@@ -51,11 +51,11 @@ jobs:
 
       - name: Run `packer init`
         id: init
-        run: "packer init ./packer/ec2.pkr.hcl"
+        run: cd packer && packer init .
 
       - name: Run `packer validate`
         id: validate
-        run: "packer validate ./packer/ec2.pkr.hcl"
+        run: cd packer && packer validate .
 
       - name: Run packer build
         env:
