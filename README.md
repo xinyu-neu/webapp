@@ -15,4 +15,3 @@
 * Run by typing `./mvnw spring-boot:run`
 * The server will be run at http://localhost:8080/
 * Test can be done using Postman
-****
