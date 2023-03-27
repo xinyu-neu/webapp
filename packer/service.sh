@@ -23,8 +23,7 @@ EOT
 
 sudo chown -R jvmapps:appmgr /opt/deployment
 
-sudo systemctl daemon-reload
-sudo systemctl start myapp.service
-
-sudo systemctl enable myapp
+#sudo systemctl daemon-reload
+#sudo systemctl start myapp.service
+#sudo systemctl enable myapp
 
