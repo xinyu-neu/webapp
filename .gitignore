@@ -48,3 +48,5 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 .project
 .classpath
+
+csye6225.log
