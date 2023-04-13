@@ -62,9 +62,7 @@ jobs:
 
       - name: Install AWS Cli
         run:
-          sudo apt-get update
-          sudo apt-get install -y python3-pip
-          sudo pip3 install awscli
+          sudo apt-get update && sudo apt-get install -y python3-pip && sudo pip3 install awscli
 
       - name: Refresh launch template
         env:
@@ -72,9 +70,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.DEMO_AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: us-west-2
         run:
-          cd packer
-          chmod +x refresh.sh
-          ./refresh.sh
+          cd packer && chmod +x refresh.sh && ./refresh.sh
 
 
 
