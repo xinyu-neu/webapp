@@ -31,10 +31,10 @@ public class UserController {
   private StatsDClient statsDClient;
 
   @GetMapping(path = "/healthz")
-  public void checkHealth() {
+  public String checkHealth() {
     logger.info("this is a info message. get healthz is ok");
     statsDClient.incrementCounter("endpoint.healthz.http.get");
-    return;
+    return "Health is OK";
   }
 
   @PostMapping(path = "/v1/user")
