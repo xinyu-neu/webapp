@@ -19,7 +19,7 @@ public class BasicAuthWebSecurityConfiguration {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.authorizeRequests()
             .antMatchers(HttpMethod.GET, "/healthz", "/v1/product/**").permitAll()
-            .antMatchers(HttpMethod.POST, "/v1/user").permitAll()
+            .antMatchers(HttpMethod.POST, "/v2/user").permitAll()
             .anyRequest().authenticated()
             .and().csrf().disable()
             .httpBasic()
