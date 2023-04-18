@@ -37,7 +37,7 @@ public class UserController {
     return "Health is OK";
   }
 
-  @PostMapping(path = "/v1/user")
+  @PostMapping(path = "/v2/user")
   public ResponseEntity<AppUser> addNewUser(@RequestBody AppUser user) {
     statsDClient.incrementCounter("endpoint.user.http.post");
 
@@ -60,7 +60,7 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.CREATED).body(user);
   }
 
-  @GetMapping(path = "/v1/user/{id}")
+  @GetMapping(path = "/v2/user/{id}")
   public ResponseEntity<AppUser> getUser(@PathVariable(value = "id") int id,
       Authentication authentication) {
     statsDClient.incrementCounter("endpoint.user.http.get");
